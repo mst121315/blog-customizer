@@ -23,7 +23,15 @@
 	padding: 50px 31px;
 	background-color: #ffffff;
 	border-right: 1px solid #000000;
+	justify-content: space-between;
 }
+
+.selectsContainer{
+	display: flex;
+	flex-direction: column;
+	row-gap: 100px;
+}
+
 
 .bottomContainer {
 	display: flex;
