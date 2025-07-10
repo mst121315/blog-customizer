@@ -11,24 +11,37 @@ import { FontColorSelect } from './elements/FontColorSelect';
 import { BackgroundColorSelect } from './elements/BackgroundColor';
 import { ContentWidthArrSelect } from './elements/ContentWidthSelect';
 import { Separator } from 'src/ui/separator/Separator';
+import { Text } from 'src/ui/text/Text';
 
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 
 export const ArticleParamsForm = () => {
-
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const rootRef = useRef<HTMLDivElement>(null);
-	useOutsideClickClose({ isOpen, rootRef, onChange: setIsOpen, onClose: () => setIsOpen(false) });
-	const handleToggle = useCallback(() => setIsOpen(p => !p), []);
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef,
+		onChange: setIsMenuOpen,
+		onClose: () => setIsMenuOpen(false),
+	});
+	const handleToggle = useCallback(() => setIsMenuOpen((p) => !p), []);
 
-	const [fontSizeValue, setFontSizeValue] = useState<OptionType>(defaultArticleState.fontSizeOption);
-	const [fontValue, setFontValue] = useState<OptionType>(defaultArticleState.fontFamilyOption);
-	const [fontColorValue, setFontColorValue] = useState<OptionType>(defaultArticleState.fontColor);
-	const [contentWidthValue, setContentWidthValue] = useState<OptionType>(defaultArticleState.contentWidth);
-	const [backgroundColorValue, setbackgroundColorValue] = useState<OptionType>(defaultArticleState.backgroundColor);
-
-
+	const [fontSizeValue, setFontSizeValue] = useState<OptionType>(
+		defaultArticleState.fontSizeOption
+	);
+	const [fontValue, setFontValue] = useState<OptionType>(
+		defaultArticleState.fontFamilyOption
+	);
+	const [fontColorValue, setFontColorValue] = useState<OptionType>(
+		defaultArticleState.fontColor
+	);
+	const [contentWidthValue, setContentWidthValue] = useState<OptionType>(
+		defaultArticleState.contentWidth
+	);
+	const [backgroundColorValue, setbackgroundColorValue] = useState<OptionType>(
+		defaultArticleState.backgroundColor
+	);
 
 	const fontRef = useRef<OptionType | null>(null);
 	const sizeRef = useRef<OptionType | null>(null);
@@ -49,29 +62,28 @@ export const ArticleParamsForm = () => {
 		if (main) {
 			if (font) {
 				main.style.setProperty('--font-family', font);
-			} 
+			}
 			if (size) {
 				main.style.setProperty('--font-size', size);
-			} 
+			}
 			if (color) {
 				main.style.setProperty('--font-color', color);
-			} 
+			}
 			if (background) {
 				main.style.setProperty('--bg-color', background);
-			} 
+			}
 			if (width) {
 				main.style.setProperty('--container-width', width);
 			}
 		}
-
-	}
+	};
 
 	const handleReset = () => {
 		setFontValue(defaultArticleState.fontFamilyOption);
 		fontRef.current = defaultArticleState.fontFamilyOption;
-		
+
 		setFontSizeValue(defaultArticleState.fontSizeOption);
-   		sizeRef.current = defaultArticleState.fontSizeOption;
+		sizeRef.current = defaultArticleState.fontSizeOption;
 
 		setFontColorValue(defaultArticleState.fontColor);
 		colorRef.current = defaultArticleState.fontColor;
@@ -81,76 +93,107 @@ export const ArticleParamsForm = () => {
 
 		setContentWidthValue(defaultArticleState.contentWidth);
 		widthRef.current = defaultArticleState.contentWidth;
-				
+
 		const main = document.querySelector('main');
 		if (main) {
-			main.style.setProperty('--font-family', defaultArticleState.fontFamilyOption.value),
-			main.style.setProperty('--font-size', defaultArticleState.fontSizeOption.value),
-			main.style.setProperty('--font-color', defaultArticleState.fontColor.value),
-			main.style.setProperty('--bg-color', defaultArticleState.backgroundColor.value),
-			main.style.setProperty('--container-width', defaultArticleState.contentWidth.value);
+			main.style.setProperty(
+				'--font-family',
+				defaultArticleState.fontFamilyOption.value
+			),
+				main.style.setProperty(
+					'--font-size',
+					defaultArticleState.fontSizeOption.value
+				),
+				main.style.setProperty(
+					'--font-color',
+					defaultArticleState.fontColor.value
+				),
+				main.style.setProperty(
+					'--bg-color',
+					defaultArticleState.backgroundColor.value
+				),
+				main.style.setProperty(
+					'--container-width',
+					defaultArticleState.contentWidth.value
+				);
 		}
 	};
 
 	return (
-  <>
-    <ArrowButton isOpen={isOpen} onClick={handleToggle} />
-    <aside ref={rootRef} className={clsx(styles.container, { [styles.container_open]: isOpen })}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div className={styles.selectsContainer}>
-          <div>
-            <FontFamilySelect
-              value={fontValue}
-              onChange={opt => {
-                setFontValue(opt);
-                fontRef.current = opt;
-              }}
-            />
-          </div>
-          <div>
-            <FontSizeGroup
-              value={fontSizeValue}
-              onChange={opt => {
-                setFontSizeValue(opt);
-                sizeRef.current = opt;
-              }}
-            />
-          </div>
-          <div>
-            <FontColorSelect
-              value={fontColorValue}
-              onChange={opt => {
-                setFontColorValue(opt);
-                colorRef.current = opt;
-              }}
-            />
-          </div>
-          <div><Separator /></div>
-          <div>
-            <BackgroundColorSelect
-              value={backgroundColorValue}
-              onChange={opt => {
-                setbackgroundColorValue(opt);
-                backgroundRef.current = opt;
-              }}
-            />
-          </div>
-          <div>
-            <ContentWidthArrSelect
-              value={contentWidthValue}
-              onChange={opt => {
-                setContentWidthValue(opt);
-                widthRef.current = opt;
-              }}
-            />
-          </div>
-        </div>
-        <div className={styles.bottomContainer}>
-          <Button title="Сбросить" htmlType="button" type="clear" onClick={handleReset} />
-          <Button title="Применить" htmlType="submit" type="apply" />
-        </div>
-      </form>
-    </aside>
-  </>
-);
-}
+		<>
+			<ArrowButton isOpen={isMenuOpen} onClick={handleToggle} />
+			<aside
+				ref={rootRef}
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}>
+				<form className={styles.form} onSubmit={handleSubmit}>
+					<div className={styles.selectsContainer}>
+						<div>
+							<Text as='h2' size={31} weight={800} uppercase>
+								Задайте параметры
+							</Text>
+						</div>
+						<div>
+							<FontFamilySelect
+								value={fontValue}
+								onChange={(opt) => {
+									setFontValue(opt);
+									fontRef.current = opt;
+								}}
+							/>
+						</div>
+						<div>
+							<FontSizeGroup
+								value={fontSizeValue}
+								onChange={(opt) => {
+									setFontSizeValue(opt);
+									sizeRef.current = opt;
+								}}
+							/>
+						</div>
+						<div>
+							<FontColorSelect
+								value={fontColorValue}
+								onChange={(opt) => {
+									setFontColorValue(opt);
+									colorRef.current = opt;
+								}}
+							/>
+						</div>
+						<div>
+							<Separator />
+						</div>
+						<div>
+							<BackgroundColorSelect
+								value={backgroundColorValue}
+								onChange={(opt) => {
+									setbackgroundColorValue(opt);
+									backgroundRef.current = opt;
+								}}
+							/>
+						</div>
+						<div>
+							<ContentWidthArrSelect
+								value={contentWidthValue}
+								onChange={(opt) => {
+									setContentWidthValue(opt);
+									widthRef.current = opt;
+								}}
+							/>
+						</div>
+					</div>
+					<div className={styles.bottomContainer}>
+						<Button
+							title='Сбросить'
+							htmlType='button'
+							type='clear'
+							onClick={handleReset}
+						/>
+						<Button title='Применить' htmlType='submit' type='apply' />
+					</div>
+				</form>
+			</aside>
+		</>
+	);
+};
